@@ -18,7 +18,7 @@ class CalculatorButton{
     return brC;
   }
   
-  public int getValue(){
+  public String getValue(){
     return value;
   }
   
