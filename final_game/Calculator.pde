@@ -1,15 +1,15 @@
 class Calculator{ //<>//
-  PImage onImage;
-  PImage offImage;
+  //PImage onImage;
+  //PImage offImage;
   PImage calcImage;
-  boolean isOn;
-  int firstNumber; int secondNumber;
-  String calculatorDisplay;
+  //boolean isOn;
+  String firstNumber; String secondNumber;
+  String calculatorDisplayText;
   CalculatorButton[] numberButtons;
   int[] enterButton; //holds the x,y coordinates of the enter button
   
   public Calculator(){
-    numberButtons = new CalculatorButton[13];
+    numberButtons = new CalculatorButton[14];
     numberButtons[0] = new CalculatorButton("1", new int[]{749,478}, new int[]{807,540});
     numberButtons[1] = new CalculatorButton("2", new int[]{868,478}, new int[]{929,540});
     numberButtons[2] = new CalculatorButton("3", new int[]{989,478}, new int[]{1050,540});
@@ -23,24 +23,55 @@ class Calculator{ //<>//
     numberButtons[10] = new CalculatorButton("*" , new int[]{1110, 570}, new int[]{1170, 690});
     numberButtons[11] = new CalculatorButton("enter" , new int[]{1110, 720}, new int[]{1170, 900});
     numberButtons[12] = new CalculatorButton("del", new int[]{930,840}, new int[]{1050, 900});
-    calculatorDisplay = "";
+    numberButtons[13] = new CalculatorButton("clear", new int[]{1110,478 }, new int[]{1170,540});
+    
+    calculatorDisplayText = "";
     calcImage = loadImage("images/Calculator_On.png");
-    isOn = false;
+    //isOn = false;
     enterButton = new int[2];
     
   }
   
+  
+  public String calculate(){
+    String output = "";
+    for(int i=0; i<Integer.parseInt(secondNumber); i++){
+      output += firstNumber;
+      
+    }
+    return output;
+  }
   public void overButtons(){
     for(CalculatorButton button: numberButtons){
       if(mouseX > button.getTopCorner()[0] && mouseX < button.getBottomCorner()[0] && mouseY > button.getTopCorner()[1] 
-      && mouseY < button.getBottomCorner()[1] && mousePressed)
-     println(button.getValue());
+      && mouseY < button.getBottomCorner()[1] && mousePressed){
+        if(button.getValue().equals("*")){
+          firstNumber = calculatorDisplayText;
+        }
+        
+       if(button.getValue().equals("enter")){
+          secondNumber = calculatorDisplayText.substring(calculatorDisplayText.indexOf("*") + 1);
+          calculatorDisplayText = calculate();
+        }else if(button.getValue().equals("clear")){
+        calculatorDisplayText = ""; 
+        }else if(button.getValue().equals("del")){
+          calculatorDisplayText = calculatorDisplayText.substring(0,calculatorDisplayText.length() - 1);
+       
+      }else{
+            calculatorDisplayText += button.getValue();
+      }    
+        
+       mousePressed = false; //we set mousePressed to false to prevent number repeating
     }
-    
+   
+     displayCalculator();
+    }
   }
   
   public void displayCalculator(){
-    //text(calculatorDisplay, 
+    textSize(30);
+    fill(0);
+    text(calculatorDisplayText, 754, 210);
     
   }
   
@@ -48,7 +79,6 @@ class Calculator{ //<>//
     return calcImage;
     
   }
-  
   
   
   

@@ -9,6 +9,7 @@ class SceneObject{
   private String openImageURL;
   private int numOfClicks;
   private boolean isCalculator;
+  private String insideImage;
   
   public SceneObject(String name, int[] tlC, int[] brC ,String openImageURL){
     this.name = name;
