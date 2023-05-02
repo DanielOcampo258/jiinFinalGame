@@ -4,35 +4,67 @@ class Poster{
   PImage passwordImage;
   PImage currentView;
   boolean lockView;
+  String userInput;
+  PosterTextBox[] textBoxes;
   int[] tlC; int[] brC;
   
   public Poster(){
+    userInput= "";
+    
+    textBoxes = new PosterTextBox[5];
+    textBoxes[0] = new PosterTextBox(new int[]{795,375}, new int[]{1110,455});
+    textBoxes[1] = new PosterTextBox(new int[]{795,500}, new int[]{1110,580});
+    textBoxes[2] = new PosterTextBox(new int[]{795,620}, new int[]{1110,700});
+    textBoxes[3] = new PosterTextBox(new int[]{795,740}, new int[]{1110,820});
+    textBoxes[4] = new PosterTextBox(new int[]{795,860}, new int[]{1110,940});
     
     tlC = new int[]{646,40};
     brC = new int[]{1270, 1036};
-    posterInitial = currentView =  loadImage("images/posterInitial.png");
-    posterHover = loadImage("images/posterHover.png");
-    passwordImage = loadImage("images/posterLocked.png");
-    
+   
   }
+  
+  
   //2732, 2048
-  public PImage displayPoster(){
+  public void displayPoster(){
     
-    if(mouseX > tlC[0] && mouseX < brC[0] && mouseY > tlC[1] && mouseY < brC[1]){
-      if(mousePressed || currentView == passwordImage){
-        currentView = passwordImage;
-      }else 
-          currentView = posterHover;
+  
+        for(int j=0; j<textBoxes.length; j++){
+          textBoxes[j].checkBounds();
+        if(textBoxes[j].isActive){
+          fill(169,169,169);
+          rect(textBoxes[j].tlC[0], textBoxes[j].tlC[1] +5, 300,70);
+          
+          if(keyPressed && key != '\0'){
+            keyPressed = false;
+          
+            if(key == BACKSPACE && textBoxes[j].getInput().length() >= 0){
+              if(textBoxes[j].getInput().length() == 0)
+                continue;
+                
+             textBoxes[j].setInput(textBoxes[j].getInput().substring(0,textBoxes[j].getInput().length() - 1));
+           
+            }else{
+              
+            textBoxes[j].setInput(textBoxes[j].getInput() + key);
+            }
+          }
+        }
+          
       
+ 
       
-    }else if(mousePressed){
-        currentView = posterInitial;
-     
-    }else if(currentView == posterHover ){
-       currentView = posterInitial;
     }
     
-    return currentView;
+    
+     for(int j=0; j<textBoxes.length; j++){
+       
+        textBoxes[j].drawTextBox();
+      }
+      
+      userInput = "";
+      
+      
+ 
   }
   
   public PImage getInitialImage(){
