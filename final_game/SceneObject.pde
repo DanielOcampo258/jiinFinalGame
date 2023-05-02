@@ -19,6 +19,28 @@ class SceneObject{
     this.mouseOver = false;
    numOfClicks = 0;
     isCalculator = false;
+    insideImage = "";
+  }
+  
+  public String getName(){
+    return name;
+  }
+  
+  public int getClickAmount(){
+    return numOfClicks;
+  }
+  
+  public void setClickAmount(int amount){
+    numOfClicks = amount;
+  }
+    
+  public void setInsideImage(String insideImagePath){
+    insideImage = insideImagePath;
+  }
+  
+  public String getInsideImage(){
+    return insideImage;
+    
   }
   
   public boolean inBounds(int mousePosX, int mousePosY){
@@ -38,10 +60,6 @@ class SceneObject{
   public boolean isCalculator(){ 
   return isCalculator;
 }
-  
-  
-    
-    
   
   
   public String getOpenImage(){

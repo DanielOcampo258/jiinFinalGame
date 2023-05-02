@@ -6,9 +6,11 @@ class Calculator{ //<>//
   String firstNumber; String secondNumber;
   String calculatorDisplayText;
   CalculatorButton[] numberButtons;
-  int[] enterButton; //holds the x,y coordinates of the enter button
+  int[] tlC; int brC; //holds the x,y coordinates of the tlC and brC of calculator view
   
   public Calculator(){
+    
+  
     numberButtons = new CalculatorButton[14];
     numberButtons[0] = new CalculatorButton("1", new int[]{749,478}, new int[]{807,540});
     numberButtons[1] = new CalculatorButton("2", new int[]{868,478}, new int[]{929,540});
@@ -28,7 +30,7 @@ class Calculator{ //<>//
     calculatorDisplayText = "";
     calcImage = loadImage("images/Calculator_On.png");
     //isOn = false;
-    enterButton = new int[2];
+
     
   }
   
@@ -41,7 +43,10 @@ class Calculator{ //<>//
     }
     return output;
   }
+  
+  
   public void overButtons(){
+    println(calculatorDisplayText);
     for(CalculatorButton button: numberButtons){
       if(mouseX > button.getTopCorner()[0] && mouseX < button.getBottomCorner()[0] && mouseY > button.getTopCorner()[1] 
       && mouseY < button.getBottomCorner()[1] && mousePressed){
@@ -63,6 +68,7 @@ class Calculator{ //<>//
         
        mousePressed = false; //we set mousePressed to false to prevent number repeating
     }
+   
    
      displayCalculator();
     }
