@@ -79,7 +79,6 @@ class Calculator{ //<>//
        mousePressed = false; //we set mousePressed to false to prevent number repeating
     }
    
-   
      displayCalculator();
     }
   }
@@ -95,7 +94,5 @@ class Calculator{ //<>//
     return calcImage;
     
   }
-  
-  
   
 }

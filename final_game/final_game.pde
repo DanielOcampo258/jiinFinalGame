@@ -20,7 +20,7 @@ void setup(){
  hoveringOverObject = false;
   sceneImage = loadImage(initialStateImage);
   
-  sceneObjects[0] = new SceneObject("wardrobe", new int[]{896,220}, new int[]{1029,570}, "images/wardrobeOpen.png" );
+  sceneObjects[0] = new SceneObject("Cabinet", new int[]{896,220}, new int[]{1029,570}, "images/open_cabinet.png" );
   sceneObjects[1] = new SceneObject("Poster_1", new int[]{548, 300}, new int[]{624, 368}, "images/posterHover.png");
   sceneObjects[1].setInsideImage("images/posterLocked.png");
   sceneObjects[2] = new SceneObject("Window", new int[]{1218,278}, new int[]{1350,510}, "images/window-open.png");
