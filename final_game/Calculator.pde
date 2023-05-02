@@ -6,11 +6,14 @@ class Calculator{ //<>//
   String firstNumber; String secondNumber;
   String calculatorDisplayText;
   CalculatorButton[] numberButtons;
-  int[] tlC; int brC; //holds the x,y coordinates of the tlC and brC of calculator view
+  int[] tlC; int[] brC; //holds the x,y coordinates of the tlC and brC of calculator view
   
   public Calculator(){
     
-  
+    tlC = new int[]{685, 115};
+    
+    brC = new int[]{1220, 965};
+    
     numberButtons = new CalculatorButton[14];
     numberButtons[0] = new CalculatorButton("1", new int[]{749,478}, new int[]{807,540});
     numberButtons[1] = new CalculatorButton("2", new int[]{868,478}, new int[]{929,540});
@@ -34,6 +37,13 @@ class Calculator{ //<>//
     
   }
   
+  
+   public boolean insideOfCalc(){
+           if(mouseX > tlC[0] && mouseX < brC[0] && mouseY > tlC[1] && mouseY < brC[1] && mousePressed)
+            return true;
+          else
+            return false;
+   }
   
   public String calculate(){
     String output = "";

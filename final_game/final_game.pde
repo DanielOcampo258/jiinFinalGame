@@ -3,14 +3,16 @@ PImage sceneImage;
 SceneObject[] sceneObjects;
 
 String initialStateImage;
-Boolean hoveringOverObject;
-Boolean calcRunning;
+boolean hoveringOverObject;
+boolean calcRunning;
 Calculator calc;
+Poster poster;
 
 void setup(){
   calcRunning = false;
   size(1920, 1080);
   calc = new Calculator();
+  poster = new Poster();
   
   sceneObjects = new SceneObject[12];
   initialStateImage = "images/initialRoomState.png";
@@ -28,65 +30,69 @@ void setup(){
 
 void draw(){
   
-     background(sceneImage);
-  
-  if(calcRunning){
-    sceneImage = calc.getCalcImage();
-       textSize(20);
-    text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+      sceneImage = poster.displayPoster();
+      
+    background(sceneImage);
+   textSize(20);
+   text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
   fill(255, 255, 255);
-    calc.overButtons();
-  }else{
+  
+  //if(calcRunning){
+  //  sceneImage = calc.getCalcImage();
+     
+  //  calc.overButtons();
+  //  if(!calc.insideOfCalc()){
+  //    calcRunning = false;
+  //  }
+  //}else{
     
-    //calc.overButtons();
+  //  //calc.overButtons();
      
-   for(int i=0; i<sceneObjects.length; ++i){
-     if(sceneObjects[i] != null){
-       if(sceneObjects[i].inBounds(mouseX, mouseY)){
-         //cursor(MOVE); //<>//
-          sceneObjects[i].setMouseOver(true); 
-         if(mousePressed){
-           sceneObjects[i].setClickAmount(sceneObjects[i].getClickAmount() + 1);
+  // for(int i=0; i<sceneObjects.length; ++i){
+  //   if(sceneObjects[i] != null){
+  //     if(sceneObjects[i].inBounds(mouseX, mouseY)){
+  //       //cursor(MOVE); //<>//
+  //        sceneObjects[i].setMouseOver(true); 
+  //       if(mousePressed){
+  //         sceneObjects[i].setClickAmount(sceneObjects[i].getClickAmount() + 1);
      
-           mousePressed = false;
+  //         mousePressed = false;
                  
           
-            cursor(ARROW);
-           sceneImage = loadImage(sceneObjects[i].getOpenImage());
-            if(sceneObjects[i].getClickAmount() % 2 == 0 && sceneObjects[i].getName().equals("Drawer")){
-              
-              hoveringOverObject = true;
-              calcRunning = true;
+  //          cursor(ARROW);
+  //         sceneImage = loadImage(sceneObjects[i].getOpenImage());
+  //          if(sceneObjects[i].getClickAmount() % 2 == 0 && sceneObjects[i].getName().equals("Drawer")){
+             
+  //            calcRunning = true;
         
            
-            }
-         }
-       }else{
-         if(mousePressed)
-          sceneObjects[i].setMouseOver(false); 
-     }
-    }  
-   }
+  //          }
+  //       }
+  //     }else{
+  //       if(mousePressed)
+  //        sceneObjects[i].setMouseOver(false); 
+  //   }
+  //  }  
+  // }
    
    
    
-   //pass over all of the objects to make sure user is not hovering over anything to set
-   // scene back to og image
-   for(int j=0; j<sceneObjects.length; ++j){
-     if(sceneObjects[j] != null){
+  // //pass over all of the objects to make sure user is not hovering over anything to set
+  // // scene back to og image
+  // for(int j=0; j<sceneObjects.length; ++j){
+  //   if(sceneObjects[j] != null){
     
-       if(sceneObjects[j].isMouseOver() || hoveringOverObject)
-         break;
-        sceneObjects[j].setClickAmount(0);
-     }
-     if(j == sceneObjects.length - 1){
-         cursor(ARROW);
-         sceneImage = loadImage(initialStateImage);
-       }
-   }
-  }
+  //     if(sceneObjects[j].isMouseOver() || calcRunning)
+  //       break;
+  //      sceneObjects[j].setClickAmount(0);
+  //   }
+  //   if(j == sceneObjects.length - 1){
+  //       cursor(ARROW);
+  //       sceneImage = loadImage(initialStateImage);
+  //     }
+  // }
+  //}
    
-
 
 
   //   textSize(20);
