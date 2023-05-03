@@ -1,4 +1,4 @@
-class Calculator{ //<>//
+class Calculator{ //<>// //<>//
   //PImage onImage;
   //PImage offImage;
   PImage calcImage;

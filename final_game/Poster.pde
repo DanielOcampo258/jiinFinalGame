@@ -1,17 +1,20 @@
 class Poster {
-  PImage posterInitial;
-  PImage posterHover;
-  PImage passwordImage;
-  PImage currentView;
-  boolean lockView;
-  String userInput;
-  PosterTextBox[] textBoxes;
-  int[] tlC;
-  int[] brC;
+  private PImage posterInitial;
+ private  PImage posterHover;
+  private PImage passwordImage;
+  private PImage currentView;
+  private boolean isOpen;
+  private boolean lockView;
+  private String userInput;
+  private PosterTextBox[] textBoxes;
+  private int[] tlC;
+  private int[] brC;
 
   public Poster() {
+    
+    isOpen = false;
     userInput= "";
-
+  
     textBoxes = new PosterTextBox[5];
     textBoxes[0] = new PosterTextBox(new int[]{796, 380}, new int[]{1110, 455}, "it\'s");
     textBoxes[1] = new PosterTextBox(new int[]{796, 501}, new int[]{1110, 580}, "all");
@@ -26,10 +29,13 @@ class Poster {
 
   //2732, 2048
   public void displayPoster() {
-
+    
+    int unlocked = 0;
+    
+    
     for (int j=0; j<textBoxes.length; j++) {
       textBoxes[j].checkBounds();
-      if (textBoxes[j].isActive) {
+      if (textBoxes[j].isActive()) {
         //fill(169, 169, 169);
         //rect(textBoxes[j].tlC[0], textBoxes[j].tlC[1] +5, 300, 70);
 
@@ -49,12 +55,25 @@ class Poster {
       }
     }
 
+
     for (int j=0; j<textBoxes.length; j++) {
-
+      if(textBoxes[j].isUnlocked()){  //checks how many posters are unlocked
+        unlocked++;
+      }
+      
       textBoxes[j].drawTextBox();
+      
     }
-
+    
+    if(unlocked == 5){
+      isOpen = true;
+    }
+    
     userInput = "";
+  }
+  
+  public boolean isOpen(){
+    return isOpen;
   }
 
   public PImage getInitialImage() {

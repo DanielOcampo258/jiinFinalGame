@@ -5,15 +5,17 @@ SceneObject[] sceneObjects;
 String initialStateImage;
 boolean hoveringOverObject;
 boolean calcRunning;
+float startTime = 0;
 Calculator calc;
 Poster poster;
+Questions questions;
 
 void setup(){
   calcRunning = false;
   size(1920, 1080);
   calc = new Calculator();
   poster = new Poster();
-  
+  questions = new Questions();
   sceneObjects = new SceneObject[12];
   initialStateImage = "images/initialRoomState.png";
     
@@ -23,6 +25,7 @@ void setup(){
   sceneObjects[0] = new SceneObject("Cabinet", new int[]{896,220}, new int[]{1029,570}, "images/open_cabinet.png" );
   sceneObjects[1] = new SceneObject("Poster_1", new int[]{548, 300}, new int[]{624, 368}, "images/posterHover.png");
   sceneObjects[1].setInsideImage("images/posterLocked.png");
+  
   sceneObjects[2] = new SceneObject("Window", new int[]{1218,278}, new int[]{1350,510}, "images/window-open.png");
   sceneObjects[3] = new SceneObject("Calendar", new int[]{1047,346}, new int[]{1091,440}, "images/test.png");
   sceneObjects[4] = new SceneObject("Drawer", new int[]{725, 770}, new int[]{832,870}, "images/drawerOpen.png");
@@ -31,14 +34,35 @@ void setup(){
 
 void draw(){
   
-    sceneImage = loadImage(sceneObjects[1].getInsideImage());
-    background(sceneImage);
-    poster.displayPoster();
+  
+  //if(!poster.isOpen){
+  //  sceneImage = loadImage(sceneObjects[1].getInsideImage());
+  //  background(sceneImage);
+  //  poster.displayPoster();
+  //}else{
+      if(startTime == 0){
+        startTime = millis();
+      }
+      
+      float elapsedTime = millis() - startTime;
+      
+      if(elapsedTime > 1000){
+        sceneImage = questions.drawQuestions();
+        background(sceneImage);
+        questions.handleUserInput();
+      }else
+         background(sceneImage);
+         
+  }
     
     
-   textSize(20);
-   text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-  fill(255, 255, 255);
+    
+    
+    
+    
+  // textSize(20);
+  // text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+  //fill(255, 255, 255);
   
   //if(calcRunning){
   //  sceneImage = calc.getCalcImage();
@@ -54,7 +78,7 @@ void draw(){
   // for(int i=0; i<sceneObjects.length; ++i){
   //   if(sceneObjects[i] != null){
   //     if(sceneObjects[i].inBounds(mouseX, mouseY)){
-  //       //cursor(MOVE); //<>//
+  //       //cursor(MOVE); //<>// //<>//
   //        sceneObjects[i].setMouseOver(true); 
   //       if(mousePressed){
   //         sceneObjects[i].setClickAmount(sceneObjects[i].getClickAmount() + 1);
@@ -101,4 +125,3 @@ void draw(){
   //   textSize(20);
   //  text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
   //fill(255, 255, 255);
-}

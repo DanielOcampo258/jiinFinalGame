@@ -30,7 +30,6 @@ class PosterTextBox {
   public void checkInput(){
     if(input.equals(answer)){
       isUnlocked = true;
-      println("unlocked");
     }
   }
 
