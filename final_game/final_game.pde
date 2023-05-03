@@ -6,8 +6,9 @@ SceneObject[] sceneObjects;
 String initialStateImage;
 boolean hoveringOverObject;
 
-boolean titleScreenRunning;
+public boolean titleScreenRunning;
 boolean calcRunning;
+boolean drawerOpen;
 boolean posterRunning;
 boolean passcodeRunning;
 boolean questionsRunning;
@@ -22,21 +23,27 @@ Poster poster;
 Questions questions;
 
 void setup() {
+    size(1920, 1080);
+    initializeObjects();
+}
+
+public void initializeObjects(){
+  
   calcRunning = posterRunning = differentScene = passcodeRunning = questionsRunning = false;
   titleScreenRunning = true;
   playerIsAlive = true;
-  size(1920, 1080);
+
   calc = new Calculator();
   poster = new Poster();
   questions = new Questions();
   sceneObjects = new SceneObject[13];
 
   initialStateImage = "images/initialState.png";
-  
+
   deathScreen = loadImage("images/deathScreen.png");
-  
+
   titleScreen = loadImage("images/titleScreen.png");
-  
+
   hoveringOverObject = false;
   sceneImage = loadImage(initialStateImage);
 
@@ -55,46 +62,37 @@ void setup() {
   sceneObjects[10] = new SceneObject("MultTables", new int[]{1120, 486}, new int[]{1240, 560}, "images/multTables.png");
   sceneObjects[11] = new SceneObject("Flowers", new int[]{1345, 520}, new int[]{1395, 600}, "images/flowers.png");
   sceneObjects[12] = new SceneObject("Hint Book", new int[]{1256, 540}, new int[]{1450, 600}, "images/hint1.png");
-  
-
+  titleScreenRunning = true;
 }
 
 public void playerDies() {
-  if(deathScreenStartTime == 0.0){
+  if (deathScreenStartTime == 0.0) {
     deathScreenStartTime = millis();
   }
   elapsed = millis() - deathScreenStartTime;
-  
-  if(elapsed > 600){
 
-  
-  background(deathScreen);
-      textSize(20);
-      
-     if(isMouseInBounds(new int[]{775, 620}, new int[]{1130, 715})){ //restart button
-        cursor(HAND);
-        if(mousePressed){
-          
-        }
-        
-        
-      }else if(isMouseInBounds(new int[]{830, 775}, new int[]{1075, 865})){ //quit button
-        cursor(HAND);
-        
-        if(mousePressed)
-          exit();
-          
-      }else {
-        cursor(ARROW);
+  if (elapsed > 600) {
+
+
+    background(deathScreen);
+    textSize(20);
+
+    if (isMouseInBounds(new int[]{775, 620}, new int[]{1130, 715})) { //restart button
+      cursor(HAND);
+      if (mousePressed) {
+        initializeObjects();
       }
-      //775,620
-      //1130, 715
-      
-      //830, 775
-      //1075, 865
-  text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-  fill(255, 255, 255);
-  
+    } else if (isMouseInBounds(new int[]{830, 775}, new int[]{1075, 865})) { //quit button
+      cursor(HAND);
+
+      if (mousePressed)
+        exit();
+    } else {
+      cursor(ARROW);
+    }
+
+    text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+    fill(255, 255, 255);
   }
 }
 
@@ -113,84 +111,86 @@ public boolean isMouseInBoundsAndPressed(int[] tlC, int[] brC) {
 
 void draw() {
 
-    
-  if(titleScreenRunning){
-     sceneImage = titleScreen;
-    if(isMouseInBounds( new int[]{830, 578}, new int[]{1130,700})){
+
+  if (titleScreenRunning) { //title screen running or run game
+    sceneImage = titleScreen;
+    if (isMouseInBounds( new int[]{830, 578}, new int[]{1130, 700})) { //start button
       cursor(HAND);
-    }else{
-       cursor(ARROW);
-    }
-    
-
-  }
-
-  background(sceneImage);
-
-  
-  if(!playerIsAlive){
-    playerDies();
-
-  }else if (calcRunning) {
-
-    sceneImage = calc.getCalcImage();
-
-    calc.overButtons();
-
-    if (!calc.insideOfCalc() && mousePressed) {
-      calcRunning = false;
-      differentScene = true;
-    }
-  } else if (posterRunning) {
-
-    if (isMouseInBoundsAndPressed(poster.getTlc(), poster.getBrc()) ) {
-
-      sceneImage = loadImage(sceneObjects[1].getInsideImage());
-      passcodeRunning = true;
-    } else if (!isMouseInBounds(poster.getTlc(), poster.getBrc()) && mousePressed && !questionsRunning) {
-      mousePressed = false;
-      posterRunning = false;
-      passcodeRunning = false;
-      sceneImage = loadImage(initialStateImage);
-    }
-
-    if (!poster.isOpen) {
-
-      background(sceneImage);
-
-      if (passcodeRunning)
-        poster.displayPoster();
-    } else { //poster unlocked
-
-      questionsRunning = true;
-      if (startTime == 0) {
-        startTime = millis();
+      if (mousePressed){
+        mousePressed = false;
+        titleScreenRunning = false;    
       }
-
-      float elapsedTime = millis() - startTime;
-
-      if (elapsedTime > 1000) {
-        sceneImage = questions.drawQuestions();
-        background(sceneImage);
-        questions.handleUserInput();
-        //textSize(20);
-        //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-        //fill(255, 255, 255);
-      } else
-        background(sceneImage);
+    } else {
+      cursor(ARROW);
     }
-  } else if (differentScene) {
-    if (!isMouseInBounds(new int[]{550, 200}, new int[]{1200, 800}) && mousePressed) {
-      differentScene = false;
-      mousePressed = false;
-      sceneImage = loadImage(initialStateImage);
-      background(sceneImage);
-    }
+    background(sceneImage);
   } else {
 
+    background(sceneImage);
 
-    for (int i=0; i<sceneObjects.length; ++i) {
-      
+
+    if (!playerIsAlive) { //game is running and player is alive
+      playerDies();
+    } else if (calcRunning) {
+    
+      sceneImage = calc.getCalcImage();
+     
+      calc.overButtons();
+
+      if (!calc.insideOfCalc() && mousePressed) {
+        calcRunning = false;
+        differentScene = true;
+      }
+    } else if (posterRunning) {
+
+      if (isMouseInBoundsAndPressed(poster.getTlc(), poster.getBrc()) ) {
+
+        sceneImage = loadImage(sceneObjects[1].getInsideImage());
+        passcodeRunning = true;
+      } else if (!isMouseInBounds(poster.getTlc(), poster.getBrc()) && mousePressed && !questionsRunning) {
+        mousePressed = false;
+        posterRunning = false;
+        passcodeRunning = false;
+        sceneImage = loadImage(initialStateImage);
+      }
+
+      if (!poster.isOpen) {
+
+        background(sceneImage);
+
+        if (passcodeRunning)
+          poster.displayPoster();
+      } else { //poster unlocked
+
+        questionsRunning = true;
+        if (startTime == 0) {
+          startTime = millis();
+        }
+
+        float elapsedTime = millis() - startTime;
+
+        if (elapsedTime > 1000) {
+          sceneImage = questions.drawQuestions();
+          background(sceneImage);
+          questions.handleUserInput();
+          //textSize(20);
+          //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+          //fill(255, 255, 255);
+        } else
+          background(sceneImage);
+      }
+    } else if (differentScene) {
+      if (!isMouseInBounds(new int[]{550, 200}, new int[]{1200, 800}) && mousePressed) {
+        differentScene = false;
+        mousePressed = false;
+        sceneImage = loadImage(initialStateImage);
+        background(sceneImage);
+      }
+    } else {
+
+
+      for (int i=0; i<sceneObjects.length; ++i) {
+
         if (sceneObjects[i].mouseInBounds()) {
           //cursor(MOVE);
           sceneObjects[i].setMouseOver(true);
@@ -204,25 +204,21 @@ void draw() {
             sceneImage = loadImage(sceneObjects[i].getOpenImage());
 
 
-            if (sceneObjects[i].getClickAmount() % 2 == 0 && sceneObjects[i].getName().equals("Drawer")) {
-
+            if (sceneObjects[i].getName().equals("Drawer") && sceneObjects[i].getClickAmount() % 2 == 0) { //when user clicks on drawer which leads to calculator
+              println("hello");
               calcRunning = true;
-            } else if (sceneObjects[i].getName().equals("Poster_1")) {
-              println(sceneObjects[i].getClickAmount());
+            } else if (sceneObjects[i].getName().equals("Poster_1")) { //when user clicks on poster which leads to poster running sequence
+            
               posterRunning = true;
-              
-            }else if(sceneObjects[i].getName().equals("Window")){
-              if(sceneObjects[i].getClickAmount() == 1){
-                  sceneObjects[i].setOpenImage("images/windowDeath.png");
-                  
-              }else{//means  they clicked on it again
+            } else if (sceneObjects[i].getName().equals("Window")) { //for window death situation
+              if (sceneObjects[i].getClickAmount() == 1) {
+                sceneObjects[i].setOpenImage("images/windowDeath.png");
+              } else {//means  they clicked on it again
                 startTime = 0.0;
                 playerIsAlive = false;
-
               }
-          
-                
             } else {
+              if(!sceneObjects[i].getName().equals("Drawer"))
               differentScene = true;
             }
           }
@@ -240,19 +236,16 @@ void draw() {
 
         if (sceneObjects[j].isMouseOver() || calcRunning || posterRunning)
           break;
-          if(!sceneObjects[j].getName().equals("Window"))
-            sceneObjects[j].setClickAmount(0);
+        if (!sceneObjects[j].getName().equals("Window"))
+          sceneObjects[j].setClickAmount(0);
       }
       if (j == sceneObjects.length - 1) {
         cursor(ARROW);
         sceneImage = loadImage(initialStateImage);
       }
     }
-     textSize(20);
-  text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-fill(255, 255, 255);
+    //textSize(20);
+    //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+    //fill(255, 255, 255);
+  }
 }
-
-//   textSize(20);
-//  text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-//fill(255, 255, 255);

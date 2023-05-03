@@ -32,9 +32,7 @@ class Calculator{ //<>//
     
     calculatorDisplayText = "";
     calcImage = loadImage("images/Calculator_On.png");
-    //isOn = false;
-
-    
+    //isOn = false;   
   }
   
   public void resetParameters(){

@@ -29,7 +29,13 @@ class SceneObject {
     insideImage = "";
   }
   
+  public int[] getTlc(){
+    return tlC;
+  }
   
+  public int[] getBrc(){
+    return brC;
+  }
 
   public String getName() {
     return name;
