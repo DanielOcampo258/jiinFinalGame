@@ -50,6 +50,10 @@ void draw(){
         sceneImage = questions.drawQuestions();
         background(sceneImage);
         questions.handleUserInput();
+  //         textSize(20);
+  //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+  //fill(255, 255, 255);
+  
       }else
          background(sceneImage);
          
@@ -60,10 +64,7 @@ void draw(){
     
     
     
-  // textSize(20);
-  // text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-  //fill(255, 255, 255);
-  
+
   //if(calcRunning){
   //  sceneImage = calc.getCalcImage();
      
@@ -78,7 +79,7 @@ void draw(){
   // for(int i=0; i<sceneObjects.length; ++i){
   //   if(sceneObjects[i] != null){
   //     if(sceneObjects[i].inBounds(mouseX, mouseY)){
-  //       //cursor(MOVE); //<>// //<>//
+  //       //cursor(MOVE); //<>//
   //        sceneObjects[i].setMouseOver(true); 
   //       if(mousePressed){
   //         sceneObjects[i].setClickAmount(sceneObjects[i].getClickAmount() + 1);
