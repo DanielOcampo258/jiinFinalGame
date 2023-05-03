@@ -54,7 +54,7 @@ class Poster {
         //fill(169, 169, 169);
         //rect(textBoxes[j].tlC[0], textBoxes[j].tlC[1] +5, 300, 70);
 
-        if (keyPressed && key != '\0') {
+        if (keyPressed && key != '\0' && keyCode != SHIFT) {
           keyPressed = false;
 
           if (key == BACKSPACE && textBoxes[j].getInput().length() >= 0) {

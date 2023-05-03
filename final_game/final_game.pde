@@ -1,4 +1,4 @@
-PImage titleScreen; //<>//
+PImage titleScreen;
 PImage sceneImage;
 PImage deathScreen;
 SceneObject[] sceneObjects;
@@ -13,6 +13,7 @@ boolean posterRunning;
 boolean passcodeRunning;
 boolean questionsRunning;
 boolean differentScene;
+boolean cabinetOpen;
 public boolean playerIsAlive;
 
 private float startTime = 0;
@@ -23,13 +24,13 @@ Poster poster;
 Questions questions;
 
 void setup() {
-    size(1920, 1080);
-    initializeObjects();
+  size(1920, 1080);
+  initializeObjects();
 }
 
-public void initializeObjects(){
-  
-  calcRunning = posterRunning = differentScene = passcodeRunning = questionsRunning = false;
+public void initializeObjects() {
+
+  cabinetOpen = calcRunning = posterRunning = differentScene = passcodeRunning = questionsRunning = false;
   titleScreenRunning = true;
   playerIsAlive = true;
 
@@ -38,7 +39,7 @@ public void initializeObjects(){
   questions = new Questions();
   sceneObjects = new SceneObject[13];
 
-  initialStateImage = "images/initialState.png";
+  initialStateImage = "images/initialRoomState.png";
 
   deathScreen = loadImage("images/deathScreen.png");
 
@@ -47,7 +48,8 @@ public void initializeObjects(){
   hoveringOverObject = false;
   sceneImage = loadImage(initialStateImage);
 
-  sceneObjects[0] = new SceneObject("Cabinet", new int[]{896, 220}, new int[]{1029, 570}, "images/insideCabinet.png" );
+  sceneObjects[0] = new SceneObject("Cabinet", new int[]{896, 220}, new int[]{1029, 570}, "images/cabinetOpen.png" );
+  sceneObjects[0].setInsideImage("images/insideCabinet.png");
   sceneObjects[1] = new SceneObject("Poster_1", new int[]{705, 200}, new int[]{800, 440}, "images/posterHover.png");
   sceneObjects[1].setInsideImage("images/posterLocked.png");
   sceneObjects[2] = new SceneObject("Window", new int[]{1218, 278}, new int[]{1350, 470}, "images/window-open.png");
@@ -116,9 +118,9 @@ void draw() {
     sceneImage = titleScreen;
     if (isMouseInBounds( new int[]{830, 578}, new int[]{1130, 700})) { //start button
       cursor(HAND);
-      if (mousePressed){
+      if (mousePressed) {
         mousePressed = false;
-        titleScreenRunning = false;    
+        titleScreenRunning = false;
       }
     } else {
       cursor(ARROW);
@@ -132,120 +134,129 @@ void draw() {
     if (!playerIsAlive) { //game is running and player is alive
       playerDies();
     } else if (calcRunning) {
-    
+
       sceneImage = calc.getCalcImage();
-     
+
       calc.overButtons();
 
       if (!calc.insideOfCalc() && mousePressed) {
         calcRunning = false;
         differentScene = true;
       }
-    } else if (posterRunning) {
+    } else if (cabinetOpen) {
+      sceneImage = loadImage(sceneObjects[0].getInsideImage());
+      
+       if (!isMouseInBounds(new int[]{550, 200}, new int[]{1200, 800}) && mousePressed) {
+         cabinetOpen = false;
+       }
+    
+  } else if (posterRunning) {
 
-      if (isMouseInBoundsAndPressed(poster.getTlc(), poster.getBrc()) ) {
+    if (isMouseInBoundsAndPressed(poster.getTlc(), poster.getBrc()) ) {
 
-        sceneImage = loadImage(sceneObjects[1].getInsideImage());
-        passcodeRunning = true;
-      } else if (!isMouseInBounds(poster.getTlc(), poster.getBrc()) && mousePressed && !questionsRunning) {
-        mousePressed = false;
-        posterRunning = false;
-        passcodeRunning = false;
-        sceneImage = loadImage(initialStateImage);
+      sceneImage = loadImage(sceneObjects[1].getInsideImage());
+      passcodeRunning = true;
+    } else if (!isMouseInBounds(poster.getTlc(), poster.getBrc()) && mousePressed && !questionsRunning) {
+      mousePressed = false;
+      posterRunning = false;
+      passcodeRunning = false;
+      sceneImage = loadImage(initialStateImage);
+    }
+
+    if (!poster.isOpen) {
+
+      background(sceneImage);
+
+      if (passcodeRunning)
+        poster.displayPoster();
+    } else { //poster unlocked
+
+      questionsRunning = true;
+      if (startTime == 0) {
+        startTime = millis();
       }
 
-      if (!poster.isOpen) {
+      float elapsedTime = millis() - startTime;
 
+      if (elapsedTime > 1000) {
+        sceneImage = questions.drawQuestions();
         background(sceneImage);
-
-        if (passcodeRunning)
-          poster.displayPoster();
-      } else { //poster unlocked
-
-        questionsRunning = true;
-        if (startTime == 0) {
-          startTime = millis();
-        }
-
-        float elapsedTime = millis() - startTime;
-
-        if (elapsedTime > 1000) {
-          sceneImage = questions.drawQuestions();
-          background(sceneImage);
-          questions.handleUserInput();
-          //textSize(20);
-          //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-          //fill(255, 255, 255);
-        } else
-          background(sceneImage);
-      }
-    } else if (differentScene) {
-      if (!isMouseInBounds(new int[]{550, 200}, new int[]{1200, 800}) && mousePressed) {
-        differentScene = false;
-        mousePressed = false;
-        sceneImage = loadImage(initialStateImage);
+        questions.handleUserInput();
+        //textSize(20);
+        //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+        //fill(255, 255, 255);
+      } else
         background(sceneImage);
-      }
-    } else {
+    }
+  } else if (differentScene) {
+    if (!isMouseInBounds(new int[]{550, 200}, new int[]{1200, 800}) && mousePressed) {
+      differentScene = false;
+      mousePressed = false;
+      sceneImage = loadImage(initialStateImage);
+      background(sceneImage);
+    }
+  } else {
 
 
-      for (int i=0; i<sceneObjects.length; ++i) {
+    for (int i=0; i<sceneObjects.length; ++i) {
 
-        if (sceneObjects[i].mouseInBounds()) {
-          //cursor(MOVE);
-          sceneObjects[i].setMouseOver(true);
-          if (mousePressed) {
-            sceneObjects[i].setClickAmount(sceneObjects[i].getClickAmount() + 1);
+      if (sceneObjects[i].mouseInBounds()) {
+        //cursor(MOVE);
+        sceneObjects[i].setMouseOver(true);
+        if (mousePressed) {
+          sceneObjects[i].setClickAmount(sceneObjects[i].getClickAmount() + 1);
 
-            mousePressed = false;
-
-
-            cursor(ARROW);
-            sceneImage = loadImage(sceneObjects[i].getOpenImage());
+          mousePressed = false;
 
 
-            if (sceneObjects[i].getName().equals("Drawer") && sceneObjects[i].getClickAmount() % 2 == 0) { //when user clicks on drawer which leads to calculator
-              println("hello");
-              calcRunning = true;
-            } else if (sceneObjects[i].getName().equals("Poster_1")) { //when user clicks on poster which leads to poster running sequence
+          cursor(ARROW);
+          sceneImage = loadImage(sceneObjects[i].getOpenImage());
+
+          if (sceneObjects[i].getName().equals("Cabinet") && sceneObjects[i].getClickAmount() % 2 == 0) {
             
-              posterRunning = true;
-            } else if (sceneObjects[i].getName().equals("Window")) { //for window death situation
-              if (sceneObjects[i].getClickAmount() == 1) {
-                sceneObjects[i].setOpenImage("images/windowDeath.png");
-              } else {//means  they clicked on it again
-                startTime = 0.0;
-                playerIsAlive = false;
-              }
-            } else {
-              if(!sceneObjects[i].getName().equals("Drawer"))
-              differentScene = true;
+            cabinetOpen = true;
+          } else if (sceneObjects[i].getName().equals("Drawer") && sceneObjects[i].getClickAmount() % 2 == 0) { //when user clicks on drawer which leads to calculator
+            println("hello");
+            calcRunning = true;
+          } else if (sceneObjects[i].getName().equals("Poster_1")) { //when user clicks on poster which leads to poster running sequence
+
+            posterRunning = true;
+          } else if (sceneObjects[i].getName().equals("Window")) { //for window death situation
+            if (sceneObjects[i].getClickAmount() == 1) {
+              sceneObjects[i].setOpenImage("images/windowDeath.png");
+            } else {//means  they clicked on it again
+              startTime = 0.0;
+              playerIsAlive = false;
             }
+          } else {
+            if (!sceneObjects[i].getName().equals("Drawer") && !sceneObjects[i].getName().equals("Cabinet") )
+              differentScene = true;
           }
-        } else {
-          if (mousePressed)
-            sceneObjects[i].setMouseOver(false);
         }
+      } else {
+        if (mousePressed)
+          sceneObjects[i].setMouseOver(false);
       }
     }
-
-    //pass over all of the objects to make sure user is not hovering over anything to set
-    // scene back to og image
-    for (int j=0; j<sceneObjects.length; ++j) {
-      if (sceneObjects[j] != null) {
-
-        if (sceneObjects[j].isMouseOver() || calcRunning || posterRunning)
-          break;
-        if (!sceneObjects[j].getName().equals("Window"))
-          sceneObjects[j].setClickAmount(0);
-      }
-      if (j == sceneObjects.length - 1) {
-        cursor(ARROW);
-        sceneImage = loadImage(initialStateImage);
-      }
-    }
-    //textSize(20);
-    //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
-    //fill(255, 255, 255);
   }
+
+  //pass over all of the objects to make sure user is not hovering over anything to set
+  // scene back to og image
+  for (int j=0; j<sceneObjects.length; ++j) {
+    if (sceneObjects[j] != null) {
+
+      if (sceneObjects[j].isMouseOver() || calcRunning || posterRunning)
+        break;
+      if (!sceneObjects[j].getName().equals("Window"))
+        sceneObjects[j].setClickAmount(0);
+    }
+    if (j == sceneObjects.length - 1) {
+      cursor(ARROW);
+      sceneImage = loadImage(initialStateImage);
+    }
+  }
+  //textSize(20);
+  //text("x: " + mouseX + " y: " + mouseY, mouseX + 10, mouseY + 5);
+  //fill(255, 255, 255);
+}
 }
