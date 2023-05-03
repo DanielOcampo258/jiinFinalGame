@@ -15,7 +15,7 @@ class Questions{
    userAnswers = new String[6];
    correctAnswers = new String[6];
    questionImages = new PImage[8];
-   wrongAnswerImages = new PImage[3];
+   wrongAnswerImages = new PImage[2];
    correctAnswerImages = new PImage[2];
    
    questionImages[0] = loadImage("images/posterDoorOpen.png");
@@ -41,7 +41,6 @@ class Questions{
    
    wrongAnswerImages[0] = loadImage("images/wrongA.png");
    wrongAnswerImages[1] = loadImage("images/doom.png");
-    wrongAnswerImages[2] = loadImage("images/deathScreen.png");
    
    correctAnswerImages[0] = loadImage("images/correctA.png");
    correctAnswerImages[1] = loadImage("images/endScreen.png");
@@ -71,6 +70,10 @@ class Questions{
             currentResultIndex++;
             startTime = millis();
         }
+          if(currentResultIndex == wrongAnswerImages.length - 1){
+            playerIsAlive = false;
+          }
+          
            return wrongAnswerImages[currentResultIndex];
         }
       }
@@ -110,7 +113,7 @@ class Questions{
     
     if(currentQuestionIndex >= 7){
       
-      if(currentQuestionIndex == 7 && mouseX > 350 && mouseX < 1300 && mouseY > 500 && mouseY < 660 && mousePressed){ //<>//
+      if(currentQuestionIndex == 7 && mouseX > 350 && mouseX < 1300 && mouseY > 500 && mouseY < 660 && mousePressed){
         currentQuestionIndex++;
         }
           
