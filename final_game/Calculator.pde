@@ -1,4 +1,4 @@
-class Calculator{ //<>// //<>//
+class Calculator{ //<>//
   //PImage onImage;
   //PImage offImage;
   PImage calcImage;
@@ -37,9 +37,14 @@ class Calculator{ //<>// //<>//
     
   }
   
+  public void resetParameters(){
+    calculatorDisplayText = "";
+  }
+  
   
    public boolean insideOfCalc(){
-           if(mouseX > tlC[0] && mouseX < brC[0] && mouseY > tlC[1] && mouseY < brC[1] && mousePressed)
+             
+           if(mouseX > tlC[0] && mouseX < brC[0] && mouseY > tlC[1] && mouseY < brC[1])
             return true;
           else
             return false;

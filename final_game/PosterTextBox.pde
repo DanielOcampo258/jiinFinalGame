@@ -22,6 +22,8 @@ class PosterTextBox {
     unlockedImage = loadImage("images/passcodeUnlocked.png");
     input = "";
   }
+  
+  
 
   public String getInput() {
     return input;
@@ -68,6 +70,10 @@ class PosterTextBox {
   }
 
 
+  public void setUnlocked(boolean status){
+    isUnlocked = status;
+  }
+  
   public void setActive(boolean status) {
     isActive = status;
   }

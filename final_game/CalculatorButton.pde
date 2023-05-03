@@ -20,7 +20,6 @@ class CalculatorButton{
   
   public String getValue(){
     return value;
-  }
-  
+  } 
   
 }

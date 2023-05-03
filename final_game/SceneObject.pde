@@ -16,7 +16,14 @@ class SceneObject {
     this.tlC = tlC;
     this.brC = brC;
     this.openImageURL = openImageURL;
-    this.mouseOver = false;
+    mouseOver = false;
+    numOfClicks = 0;
+    isCalculator = false;
+    insideImage = "";
+  }
+  
+  public void resetParameters(){
+     mouseOver = false;
     numOfClicks = 0;
     isCalculator = false;
     insideImage = "";
@@ -36,15 +43,16 @@ class SceneObject {
 
   public void setInsideImage(String insideImagePath) {
     insideImage = insideImagePath;
+  
   }
 
   public String getInsideImage() {
     return insideImage;
   }
 
-  public boolean inBounds(int mousePosX, int mousePosY) {
+  public boolean mouseInBounds() {
 
-    if (mousePosX > tlC[0] && mousePosX < brC[0] && mousePosY > tlC[1] && mousePosY < brC[1]) {
+    if (mouseX > tlC[0] && mouseX < brC[0] && mouseY > tlC[1] && mouseY < brC[1]) {
       return true;
     } else {
       return false;

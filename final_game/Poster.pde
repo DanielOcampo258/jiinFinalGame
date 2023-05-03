@@ -26,10 +26,25 @@ class Poster {
     brC = new int[]{1270, 1036};
   }
 
+  
+   public void resetParameters(){
+     isOpen = false;
+    userInput= "";
+    
+    textBoxes = new PosterTextBox[5];
+    textBoxes[0] = new PosterTextBox(new int[]{796, 380}, new int[]{1110, 455}, "it\'s");
+    textBoxes[1] = new PosterTextBox(new int[]{796, 501}, new int[]{1110, 580}, "all");
+    textBoxes[2] = new PosterTextBox(new int[]{797, 621}, new int[]{1110, 700}, "in");
+    textBoxes[3] = new PosterTextBox(new int[]{796, 743}, new int[]{1110, 820}, "your");
+    textBoxes[4] = new PosterTextBox(new int[]{795, 864}, new int[]{1110, 940}, "head");
+
+   
+  }
+  
 
   //2732, 2048
   public void displayPoster() {
-    
+       
     int unlocked = 0;
     
     
@@ -50,6 +65,7 @@ class Poster {
           } else {
 
             textBoxes[j].setInput(textBoxes[j].getInput() + key);
+          
           }
         }
       }
@@ -72,6 +88,18 @@ class Poster {
     userInput = "";
   }
   
+  public void setOpen(boolean status){
+    isOpen = status;
+  }
+ public int[] getTlc(){
+   return tlC;
+ }
+ 
+  public int[] getBrc(){
+   return brC;
+ }
+ 
+  
   public boolean isOpen(){
     return isOpen;
   }
@@ -84,7 +112,7 @@ class Poster {
     return posterHover;
   }
 
-  public PImage passwordImage() {
+  public PImage getPasswordImage() {
     return passwordImage;
   }
 }

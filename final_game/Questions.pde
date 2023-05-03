@@ -11,7 +11,6 @@ class Questions{
   private int currentResultIndex;
   
   public Questions(){
-    startTime = 0.0;
     elapsedTime = 0.0;
    userAnswers = new String[6];
    correctAnswers = new String[6];
@@ -50,6 +49,8 @@ class Questions{
     startTime = millis();
   }
   
+  
+  
   public PImage drawQuestions(){
       
       if(currentQuestionIndex == 8){
@@ -85,6 +86,24 @@ class Questions{
   //1300, 500 no
   // 1620, 660
   
+  
+  
+  public void resetParameters(){
+   
+   startTime = millis();
+   elapsedTime = 0.0;
+   
+    currentQuestionIndex = 0;
+   currentResultIndex = -1;
+   
+   userAnswers = new String[6];
+   correctAnswers = new String[6];
+   questionImages = new PImage[8];
+   wrongAnswerImages = new PImage[3];
+   correctAnswerImages = new PImage[2];
+      currentUserInput = "";
+   
+  }
   
   
   public void handleUserInput(){
@@ -156,7 +175,6 @@ class Questions{
     
     
   }
-  
   
   
 }
