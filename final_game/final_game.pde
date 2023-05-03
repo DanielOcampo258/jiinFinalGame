@@ -47,7 +47,8 @@ public void initializeObjects() {
 
   hoveringOverObject = false;
   sceneImage = loadImage(initialStateImage);
-
+  deathScreen = loadImage("images/deathScreen.png");
+  
   sceneObjects[0] = new SceneObject("Cabinet", new int[]{896, 220}, new int[]{1029, 570}, "images/cabinetOpen.png" );
   sceneObjects[0].setInsideImage("images/insideCabinet.png");
   sceneObjects[1] = new SceneObject("Poster_1", new int[]{705, 200}, new int[]{800, 440}, "images/posterHover.png");
@@ -68,6 +69,8 @@ public void initializeObjects() {
 }
 
 public void playerDies() {
+ 
+
   if (deathScreenStartTime == 0.0) {
     deathScreenStartTime = millis();
   }
@@ -147,7 +150,7 @@ void draw() {
       sceneImage = loadImage(sceneObjects[0].getInsideImage());
       
        if (!isMouseInBounds(new int[]{550, 200}, new int[]{1200, 800}) && mousePressed) {
-         cabinetOpen = false;
+         
        }
     
   } else if (posterRunning) {

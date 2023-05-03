@@ -29,12 +29,12 @@ class Questions {
 
     currentUserInput = "";
 
-    correctAnswers[0] = "1"; //nectar
-    correctAnswers[1] = "1"; //begonias
-    correctAnswers[2] = "1";//icymi
-    correctAnswers[3] = "1"; //saturday
-    correctAnswers[4] = "1"; //red
-    correctAnswers[5] = "1"; //south korea
+    correctAnswers[0] = "nectar"; //nectar
+    correctAnswers[1] = "begonias"; //begonias
+    correctAnswers[2] = "icymi";//icymi
+    correctAnswers[3] = "saturday"; //saturday
+    correctAnswers[4] = "red"; //red
+    correctAnswers[5] = "south korea"; //south korea
 
     currentQuestionIndex = 0;
     currentResultIndex = -1;
@@ -54,27 +54,33 @@ class Questions {
 
     if (currentQuestionIndex == 8) {
       elapsedTime = millis() - startTime;
-      println(elapsedTime);
+ 
 
       if (wasUserCorrect()) {
 
+        
 
-        if (elapsedTime > 1700 && currentResultIndex + 1 <  correctAnswerImages.length) {
+        if (currentResultIndex == correctAnswerImages.length - 1 && elapsedTime > 1000) { //we got to last image of correct answer, now restart game
+          initializeObjects(); //restart game
+        } 
+        
+        
+        if (elapsedTime > 1500 && currentResultIndex + 1 <  correctAnswerImages.length) {
           currentResultIndex++;
           startTime = millis();
         }
+        
+          
 
 
-        if (currentResultIndex == correctAnswerImages.length - 1) { //we got to last image of correct answer, now restart game
-          initializeObjects(); //restart game
-        }
 
+      
 
         return correctAnswerImages[currentResultIndex];
         
       } else {
 
-        if (elapsedTime > 800 && currentResultIndex + 1 <  wrongAnswerImages.length) {
+        if (elapsedTime > 700 && currentResultIndex + 1 <  wrongAnswerImages.length) {
           currentResultIndex++;
           startTime = millis();
         }
@@ -102,7 +108,7 @@ class Questions {
 
     if (currentQuestionIndex >= 7) {
 
-      if (currentQuestionIndex == 7 && mouseX > 350 && mouseX < 1300 && mouseY > 500 && mouseY < 660 && mousePressed) {
+      if (currentQuestionIndex == 7 && mouseX > 350 && mouseX < 1500 && mouseY > 500 && mouseY < 800 && mousePressed) {
         currentQuestionIndex++;
       }
 

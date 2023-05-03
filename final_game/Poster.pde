@@ -64,7 +64,7 @@ class Poster {
             textBoxes[j].setInput(textBoxes[j].getInput().substring(0, textBoxes[j].getInput().length() - 1));
           } else {
 
-            textBoxes[j].setInput(textBoxes[j].getInput() + key);
+            textBoxes[j].setInput((textBoxes[j].getInput() + key).toLowerCase());
           
           }
         }
