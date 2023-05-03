@@ -28,6 +28,8 @@ class SceneObject {
     isCalculator = false;
     insideImage = "";
   }
+  
+  
 
   public String getName() {
     return name;
@@ -68,6 +70,9 @@ class SceneObject {
   }
 
 
+  public void setOpenImage(String url){
+    openImageURL = url;
+  }
   public String getOpenImage() {
     return openImageURL;
   }
